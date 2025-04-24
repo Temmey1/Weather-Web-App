@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+
 
 function App() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const apiKey = '895284fb2d2c50a520ea537456963d9c';
+  const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
+  console.log("API Key:", process.env.REACT_APP_OPENWEATHER_API_KEY);
 
-  // Function to fetch weather by city name (input field)
-  const fetchWeatherByCity = (city) => {
+  const fetchWeatherByCity = useCallback((city) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
     axios.get(url).then((response) => {
       setData(response.data);
@@ -17,10 +18,9 @@ function App() {
     }).catch((err) => {
       console.error('Error fetching weather by city:', err);
     });
-  };
+  }, [apiKey]); // Memoize the function to prevent unnecessary re-creations
 
-  // Function to fetch weather by lat/lon (geolocation)
-  const fetchWeatherByCoords = (lat, lon) => {
+  const fetchWeatherByCoords = useCallback((lat, lon) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
     axios.get(url).then((response) => {
       setData(response.data);
@@ -28,9 +28,8 @@ function App() {
     }).catch((err) => {
       console.error('Error fetching weather by coordinates:', err);
     });
-  };
+  }, [apiKey]); // Memoize the function
 
-  // On page load, use user's current location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -42,7 +41,7 @@ function App() {
     } else {
       fetchWeatherByCity('New York'); // fallback default
     }
-  }, []);
+  }, [fetchWeatherByCity, fetchWeatherByCoords]); // Add memoized functions to dependencies
 
   // Search when pressing Enter
   const searchLocation = (event) => {
@@ -77,16 +76,16 @@ function App() {
                 {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
               </div>
               <div className="description">
-              {data.weather ? (
-    <>
-      <img
-        src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-        alt={data.weather[0].main}
-        style={{ width: '6rem', height: '6rem' }}
-      />
-      <p>{data.weather[0].main}</p>
-    </>
-  ) : null}
+                {data.weather ? (
+                  <>
+                    <img
+                      src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                      alt={data.weather[0].main}
+                      style={{ width: '6rem', height: '6rem' }}
+                    />
+                    <p>{data.weather[0].main}</p>
+                  </>
+                ) : null}
               </div>
             </div>
 

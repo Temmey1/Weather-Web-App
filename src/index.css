@@ -7,11 +7,11 @@
 }
 
 body {
-  font-family: 'Outfit', 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Outfit', 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #000;
+  color: #fff;
 }
 
 p {
@@ -24,9 +24,9 @@ h1 {
 
 .app {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   color: #fff;
 }
 
@@ -41,18 +41,20 @@ h1 {
   z-index: -1;
 }
 
-.app .search {
+.search {
   text-align: center;
   padding: 1rem;
 }
 
-.app input {
-  padding: .7rem 1.5rem;
+.search input {
+  padding: 0.7rem 1.5rem;
   font-size: 1.2rem;
   border-radius: 25px;
-  border: 1px solid rgba(255,255,255, 0.8);
-  background: rgba(255,255,255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
   color: #f8f8f8;
+  width: 90%;
+  max-width: 400px;
 }
 
 ::placeholder {
@@ -61,47 +63,96 @@ h1 {
 
 .container {
   max-width: 700px;
-  height: 700px;
   margin: auto;
   padding: 0 1rem;
-  position: relative;
-  top: 10%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1.5rem;
 }
 
-.app .top {
+.top {
   width: 100%;
-  margin: 1rem auto;
+  text-align: center;
 }
 
-.app .description {
-  position: relative;
-  right: -90%;
-  transform-origin: 0 0;
-  transform: rotate(269deg);
+.temp h1 {
+  font-size: 5rem;
 }
 
-.app .bottom {
+.description {
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+  transform: none;
+  right: 0;
+}
+
+.weather-icon {
+  width: 5rem;
+  height: 5rem;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-around;
   text-align: center;
   width: 100%;
-  margin: 1rem auto;
+  flex-wrap: wrap;
+  gap: 1rem;
   padding: 1rem;
   border-radius: 12px;
-  background-color: rgba(255,255,255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bottom div {
+  flex: 1 1 120px;
+  min-width: 100px;
 }
 
 .bold {
   font-weight: 700;
+  font-size: 1.4rem;
 }
 
+/* ✅ RESPONSIVE STYLING */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 4rem;
+  }
 
+  p {
+    font-size: 1.2rem;
+  }
 
+  .temp h1 {
+    font-size: 3rem;
+  }
 
+  .weather-icon {
+    width: 4rem;
+    height: 4rem;
+  }
 
+  .bottom {
+    flex-direction: column;
+    align-items: center;
+  }
 
+  .bottom div {
+    width: 100%;
+    text-align: center;
+  }
+}
 
+@media (max-width: 480px) {
+  .search input {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+  }
 
+  .container {
+    gap: 1rem;
+  }
+}
